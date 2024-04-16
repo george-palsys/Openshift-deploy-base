@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pacman-deployment
+  namespace: pacman
+spec:
+  selector:
+    matchLabels:
+      app: pacman
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pacman
+    spec:
+      containers:
+        - name: container
+          image: 'docker.io/georgechiu/pacman:latest'
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: conf
+              mountPath: "/opt/ManyFile"
+      volumes:
+        - name: conf
+          persistentVolumeClaim:
+            claimName: pacman-pvc
